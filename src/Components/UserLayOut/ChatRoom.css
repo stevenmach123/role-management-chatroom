@@ -1,0 +1,97 @@
+.sec-box3{
+    font-size: 2rem;
+    display:grid;
+    grid-template-columns: auto 0.3fr 1fr;
+    box-shadow: 0px 0px  8px 0px white;
+    width: 90%;
+    height:70vh;
+
+  
+    .item-box{
+        box-shadow: 3px 0px  8px 0px white;
+        overflow-y: scroll;
+    }
+    .item-box.message{
+         overflow: none;
+    
+    }
+}
+
+.pad {
+    padding: 1rem 1rem ;
+}
+.text_f1{
+    text-align: center;
+    box-shadow: 0px 2px 2px 0px rgba(121, 121, 121, 0.27);
+}
+
+
+
+
+.message{
+   
+    .input-msg{
+        
+        height:15%;
+        .input-me{
+            width:80%;
+            color:black
+            
+        }
+     }
+    .show-msg{
+        height:85%;
+        border-bottom: 1px solid black;
+        font-size: 1.7rem;
+        padding:1rem 2rem;
+        overflow-y: auto;
+    
+
+    }
+  
+}
+.msg-block{
+    display:flex; 
+    flex-direction: row-reverse;
+    gap:1.8rem;
+    align-items: center;
+    .msg-me{
+        background-color :rgb(152, 152, 213);
+        padding:1rem;
+        border-radius: 20%;
+
+        margin-left: 10px;
+    }
+    .msg-other{
+        background-color: whitesmoke;
+        color:black;
+        padding:1rem;
+        border-radius: 20%;
+    }
+    .msg-label{
+        border: 1px solid black;
+        border-radius: 50%;
+        font-size: 1.6rem;
+        padding:3px 10px;
+    }
+    
+}
+
+.msg-block.other{
+    flex-direction: row;
+}
+.msg-block + .msg-block{
+    margin-top: 1rem;
+}
+
+
+
+
+.no-button {
+background: none;
+border: none;
+outline: none;
+}
+
+
+

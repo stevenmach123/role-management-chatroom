@@ -1,0 +1,21 @@
+
+.bord{
+ border: 1px solid red;
+ 
+}
+.bb{
+    border:1px solid red;
+}
+
+.con{
+    display:grid;
+    grid-template-columns: repeat(auto-fill,26%);
+    grid-row-gap: 10px;
+    grid-column-gap: 20px; 
+
+
+   /* grid-template-columns: repeat(3,minmax(200px,1fr))  */
+    
+    /*grid-template-columns :repeat(auto-fill,minmax(100px,1fr) 200px )  */
+
+}

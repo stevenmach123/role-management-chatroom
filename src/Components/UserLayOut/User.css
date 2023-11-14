@@ -1,0 +1,31 @@
+.topic{
+    font-size: 2.1rem;
+    font-weight: 600;
+    margin:0px;
+}
+.content-choice{
+    padding-bottom: 2rem;
+    
+}
+.confirm-but{
+     display:grid;
+     
+     grid-template-columns: fit-content;
+     justify-content: center;
+     .btn{
+        font-size: 2rem;
+     }
+}
+.manage-choice{
+   
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(5rem,10rem));
+    justify-items: center;
+    column-gap: 3rem;
+    transition: 200ms ease-in-out;
+   
+    overflow: hidden;
+}
+.manage-choice .choice{
+  
+}

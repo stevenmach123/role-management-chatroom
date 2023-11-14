@@ -1,0 +1,80 @@
+.suc_label{
+    display:block;
+    position: absolute;
+    top:-20px;
+    width:max-content;
+    opacity: 0;
+    left:calc(50%);
+    transform: translateX(-50%);
+    transition: 1s ease-in-out;
+    
+    
+}
+.same_label{
+    display:block;
+    position: relative;
+     top:0px;
+     width:max-content;
+     opacity: 1;
+     left:calc(50%);
+    transform: translateX(-50%);
+    color:red;
+    font-size:1.5rem;
+}
+.same_label.success{
+    color:green;
+}
+
+
+/*
+    width:max-content // can overcome overflow-x:hidden
+*/
+.display{
+    top:0px;
+    opacity:1;
+    color:green;
+    transition: 1s ease-in-out;
+
+    
+} 
+.display.off{
+    opacity :0
+}
+.invis{
+    display:none;
+}
+
+
+.w{
+   
+}
+.div_big{
+     /*overflow-x: hidden;*/ 
+     font-size: 2rem;
+  
+}
+.form-group + .btn-group   {
+    margin-top: 1rem 
+    
+}
+
+.instruction{
+    display:block;
+    background-color:#E98980;
+    color:white; 
+    padding: 0.2rem 0rem 0rem 1rem;
+}
+.offscreen{
+    display:none;
+}
+
+.mid{
+    position:relative;
+    transform:translateX(50%);
+    width: 50%;
+   
+    
+}
+
+
+

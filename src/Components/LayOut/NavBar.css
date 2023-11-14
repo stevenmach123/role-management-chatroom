@@ -1,0 +1,30 @@
+*{
+    box-sizing:border-box;
+    
+}
+
+
+
+.x{
+    /*border:1px solid yellow;   */
+    position:relative;
+}  
+.nav-item + .nav-item{
+    margin-left:4rem;
+}
+
+.tuser_img{
+    width:100%;
+}
+.user_img {
+    display: flex;
+    max-width:6rem;
+    max-height:5rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.menu{
+    
+   transform:translateX(-30%)
+}
+
