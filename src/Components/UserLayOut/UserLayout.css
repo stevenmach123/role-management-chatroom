@@ -1,11 +1,19 @@
 .nav-item + .nav-item{
-    margin-left: 2rem;
+    margin-left: 2.4rem;
+}
+.text {
+    font-size:2rem;
+}
+@media (width <=400px){
+    .text.phone{
+        font-size: 1.6rem;
+    }
+    
 }
 
 
-
 .bb{
-    width: 80%;
+    width: 98%;
 }
 .tar_block{
     margin-top:1.5rem;
@@ -17,10 +25,11 @@
     display:grid;
     grid-template-columns: auto 1fr;
     box-shadow: 0px 0px  8px 0px white;
-    height:70vh;
+    height:67vh;
     
     .item-box{
-        overflow-y:visible
+        overflow-y:scroll;
+       
     }
     .item-box.one{ 
         box-shadow: 3px 0px  8px 0px white;
@@ -58,11 +67,11 @@
 }
 
 .con{
-        padding:10px;
+        margin-bottom: 1rem;
         display:grid;
-        grid-template-columns: repeat(auto-fill,28%);
+        grid-template-columns: repeat(auto-fill,minmax(20%,auto));
         grid-row-gap: 10px;
-        grid-column-gap: 20px; 
+        grid-column-gap: 10px; 
       
        
 }

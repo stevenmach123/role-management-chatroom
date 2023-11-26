@@ -1,9 +1,8 @@
 
+import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-let x =0;
 export default function En() {
     const find = useLocation()
     const t = useNavigate()
@@ -12,6 +11,7 @@ export default function En() {
           {/*  <>{find.state?.user?<Navigate to="home"/>:<> login<Navigate to="home/intro"/></> } </> */}
         <Navigate to="signin"/>   
         <Outlet></Outlet>
+       
       
     </>)
 }

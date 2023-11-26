@@ -6,154 +6,31 @@
       "dom.iterable",
     
     ],
-    "outDir": "./dist",
-    "allowJs": true,
-    "checkJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
+    "outDir": "lib",
+    "rootDir": "src",
+ 
+    
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "checkJs": true,
+    "skipLibCheck": true,
     "module":"NodeNext" ,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react-jsx",
+    "noImplicitReturns": false,
+    "noUnusedLocals": false,
+    
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
-  
-  "include": [
-    "src","src/**/*.ts",
- "dist/server.js"
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- , "server.ts", "dist/r1.js"  ],
-    "exclude":["node_modules","tests"]
+  //"hidden":true,
+  "include": ["src"],
+  "exclude":["src/Components/LayOut","src/Components/AddUser","src/Components/OtherComponents","src/data","src/App.*","src/index.*"]
 }

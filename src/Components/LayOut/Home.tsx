@@ -1,10 +1,8 @@
-import React, { ChangeEvent,CSSProperties, useRef,useEffect } from 'react';
+import React,{ useEffect } from 'react';
 import NavBar from "./NavBar"
-import {ser1} from '../../route_services/axiosService'
-import { Navigate, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { AuthP } from './AuthProvider';
-import { io,Socket } from "socket.io-client";
-import { properties } from '../../model';
+
 
 
 const v = {
@@ -12,7 +10,7 @@ const v = {
 }
 
 function Home() {
-  const {setSocket,user} = AuthP()
+  const {user} = AuthP()
   useEffect(()=>{
    /* if(setSocket)
       setSocket(io(`http://localhost:${properties.soc_port}`,{query:{customid:user?.current.id} }));  */

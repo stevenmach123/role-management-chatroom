@@ -8,6 +8,13 @@ const axios1=   axios.create({
     }
   });
 
+const axios0=   axios.create({
+  baseURL: `https://us-central1-chatroom-de811.cloudfunctions.net/chat-app2/`,withCredentials:true,
+  headers: {
+    "Content-type": "application/json"
+  }
+});
+
 const getData =()=>{
     return axios1.get('/hi')
 }
@@ -37,8 +44,11 @@ const postStudentUp = (obj:any)=>{
   return axios1.post<unknown>('/student_update',obj)
 }
 
-const deleteStudent = (name:string,header:{[key:string]:string|undefined})=>{
-  return axios1.delete<unknown>(`/student/${name}`,{headers:header}) 
+const deleteStudent = (id:string,header:{[key:string]:string|undefined})=>{
+  return axios1.delete<unknown>(`/student/${id}`,{headers:header}) 
+ }
+ const deleteUser = (id:string)=>{
+  return axios1.delete<unknown>(`delete_user/${id}`)
  }
 
  const putOStudent = (uid:string)=>{
@@ -78,7 +88,7 @@ const delete_indi_structure = (param_obj:URLSearchParams)=>{
 
 
 const ser1 ={
-    getData,getAll,putStudent,getStudent,postStudent,postStudentUp,getAllTypes,postTypes,postRegis,deleteStudent,deleteType,deleteAllTypes,getNStudent,putOStudent,delete_indi_structure
+    getData,getAll,putStudent,getStudent,postStudent,postStudentUp,getAllTypes,postTypes,postRegis,deleteStudent,deleteUser,deleteType,deleteAllTypes,getNStudent,putOStudent,delete_indi_structure
 }
 
 

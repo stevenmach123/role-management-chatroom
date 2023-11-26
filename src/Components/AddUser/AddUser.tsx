@@ -1,4 +1,4 @@
-import { ChangeEvent, CSSProperties, MutableRefObject, RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import React,{ ChangeEvent, CSSProperties, MutableRefObject, RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './AddUser.css'
 import { Form, json, useActionData } from 'react-router-dom';
@@ -181,7 +181,7 @@ export default function AddUser() {
           }</span>
           </label> 
           <input ref={password_ref} onChange={password_input} className="form-control" name="pass" ></input>
-          <small className={err_ar?.pass && password_ref.current?.value ?'instruction':'offscreen'}>{
+          <small  className={err_ar?.pass && password_ref.current?.value ?'instruction':'offscreen'}>{
            <>
             <li>Must contain at least a characters</li>
             <li>At least a number </li>

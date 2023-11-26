@@ -65,7 +65,7 @@ const FillUsers = current_users.map((u,i)=>{
      
       <section className="con">
           {Mycategories}
-          <div  className='text-decoration-underline' style={{fontSize:"1.4rem"}} onClick={(e)=>typeFind(e,null)}  >Cancel filter</div>
+          <div  className='text-decoration-underline' style={{fontSize:"1rem"}} onClick={(e)=>typeFind(e,null)}  >Cancel filter</div>
       </section>
       <div className='sec-box'>
           <div className="item-box one">

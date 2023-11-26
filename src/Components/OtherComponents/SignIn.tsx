@@ -8,7 +8,7 @@ import { AuthP } from '../LayOut/AuthProvider';
 
 
 const img = {
-  maxWidth:'3rem',
+  maxWidth:'2rem',
   display:'inline-block',
   pointerEvents:'auto',
   cursor:'pointer',
@@ -25,6 +25,7 @@ const log = {
     left:"50%",
     width:"fit-content",
     transform:"translateX(-50%)",
+    fontSize:'0.8rem'
     
 }   as CSSProperties  
 
@@ -54,6 +55,7 @@ const  Login = ()=>{
         setInIndex(linku.state)
       },5000)
     },[linku])
+    
    const submitForm =async (e:any)=>{
       e.preventDefault()
       const name = e.target.name.value
@@ -119,14 +121,14 @@ const  Login = ()=>{
                 
             </div>  
             <div  className="relative flex"> {/*(2)  with/without absolute.    with absolute:child elements still relative to this box. But this big box is relative to closet relative friend/parent element   */} {/*without absolute:child is not relative to this box.But, this big box relative to closet friend/parent element */}
-              <button style={log}  type="submit" className="btn btn-outline-primary"  >SignIn</button>  {/* position:relative interfere transform. Display:block - make nav-link wrap button (become div), so transform work normal  */}
-              <p style={log2} className='text-2xl '> Need Account?  <NavLink to="/signup"  className="underline font-bold  decoration-orange-400  text-orange-400 hover:text-orange-400 " > Sign Up</NavLink ></p>
+              <button style={log}  type="submit" className="btn btn-outline-primary top-5"  >SignIn</button>  {/* position:relative interfere transform. Display:block - make nav-link wrap button (become div), so transform work normal  */}
+              <p style={log2} className='text-sm '> Need Account?  <NavLink to="/signup"  className="underline font-bold  decoration-orange-400  text-orange-400  " > Sign Up</NavLink ></p>
 
             </div> 
   
         </form>
          { /* before  <div  className="relative w-1/2"> is here*/ }
-         <div className="w-1/4 flex gap-3 relative right-7">
+         <div  className="w-1/2 flex gap-3 relative">
           <div onClick={signinG} style={img}> <img src="/google_img.png"/> </div>
           <div onClick={signinF} style={img}> <img src="/facebook_img.jpeg"/></div>
         </div>

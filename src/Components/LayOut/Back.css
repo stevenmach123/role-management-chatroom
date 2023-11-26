@@ -1,3 +1,28 @@
+
+
+.big_div {
+    display: block;
+    justify-content:center;
+    width: 60%;
+    font-size:1.4rem;
+    margin:auto;
+    height:100vh;
+    overflow:visible;
+    background-color: #76a2d9;
+    box-shadow: 2px 2px 10px #999 ;
+    padding:-2px 20px;
+    color:white;
+
+}
+
+@media (width <=450px){
+    .back-phone{
+        width:100%;
+        box-sizing: border-box;
+        
+    }
+}
+
 .wrapper{
     top:0;
     left:0;

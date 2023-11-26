@@ -1,19 +1,23 @@
 .topic{
-    font-size: 2.1rem;
+    font-size: 1.6rem;
     font-weight: 600;
     margin:0px;
 }
 .content-choice{
-    padding-bottom: 2rem;
+    padding-bottom: 0.2rem;
     
 }
+.but-size{
+    font-size:1.2rem
+}
+
 .confirm-but{
      display:grid;
      
      grid-template-columns: fit-content;
      justify-content: center;
      .btn{
-        font-size: 2rem;
+        font-size: 1.4rem;
      }
 }
 .manage-choice{

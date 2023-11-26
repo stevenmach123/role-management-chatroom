@@ -1,17 +1,14 @@
 
 import { Router } from 'express';
 
-import { admin_app, db, f_db } from '../server';
+import {  db } from '../server';
 import admin from 'firebase-admin'; 
 import { vertify } from './vertify';
-import {Firestore,FieldPath} from '@google-cloud/firestore'
 
 import { bb, vertifyRole } from './vertifyRole';
-import { documentId, collection, getDocs, query, where } from 'firebase/firestore';
 
 
 const router = Router();
-const firestore = new Firestore()
 router.post('/type',async (req,res)=>{
   
   const {type,name,id,text}= req.body
@@ -26,7 +23,7 @@ router.post('/type',async (req,res)=>{
       name:name,id:id,text:text,time:admin.firestore.FieldValue.serverTimestamp()
     })
     
-    res.json('msg/type add sucess')
+    return res.json('msg/type add sucess')
 
   }
   catch(e){
@@ -54,7 +51,7 @@ router.post('/indi', async (req,res)=>{
       await indi_msg_id_ref.collection('a').add({
         name:name,id:id,to_id:to_id,text:text,time:admin.firestore.FieldValue.serverTimestamp()
       })
-      res.json('msg/indi add sucess')
+      return res.json('msg/indi add sucess')
     }catch(e){
       console.log("msg/indi post",JSON.stringify(e))
       return res.status(402).json({msg:'msg/indi post',data:JSON.stringify(e)})
@@ -84,7 +81,8 @@ router.delete('/indi', async (req,res)=>{
         const users_map = await db.collection('indi_map').get()
         for(let doc of  users_map.docs )
             await doc.ref.update({[id]:admin.firestore.FieldValue.delete()})
-        res.json('indi delete success')
+
+        return res.json('indi delete success')
 
     }
     catch(e){
@@ -118,14 +116,5 @@ router.delete('/types/:type',vertify,vertifyRole,async (req,res)=>{
     
 
 } )
-
-
-
-
-
-
-
-
-
 
 export default router

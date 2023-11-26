@@ -21,7 +21,9 @@ export async function loader(seg:any){
   //return defer({mt:ser1.getStudent(seg.params.obj).then(x=>{return json(JSON.stringify({error:'hi'}),{status:200})    }) })  
 
   await Sleep(1)
-  return defer({mt:ser1.getNStudent(seg.params?.obj,{'id_token':toen.t }).then(x=>{console.log("-",x.data); return x.data ; throw json({error:'hi'},{status:200}) }  )
+
+  
+  return defer({mt:ser1.getNStudent(seg.params?.obj,{'id_token':toen.t}).then(x=>{console.log("-",x.data); return x.data ; throw json({error:'hi'},{status:200}) }  )
   .catch((e:any) =>{
   
     if(isAxiosError(e)){
@@ -53,11 +55,10 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
   const [mshow,setMshow] = useState<boolean>(true);
   const [mshow2,setMshow2] = useState<boolean>(false);
   console.log('student',stu)
-  toen.t =""
+
    const Focus_class = (e:any)=> {
     e.preventDefault()
     
-    const ee = document.querySelectorAll('.btn-group.classy .btn:focus') 
     const ex = document.querySelectorAll('.btn-group.classy .btn')    
   
     
@@ -68,33 +69,31 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
       (f as HTMLButtonElement).style.color = (f as HTMLButtonElement).style.borderColor
 
     })
-    ee.forEach(f=>{
-      (f as HTMLButtonElement).classList.add("active");
+    if(!e?.target)
+      return 
+  
+      (e.target as HTMLButtonElement).classList.add("active");
     
-      (f as HTMLButtonElement).style.color = "black";
-      (f as HTMLButtonElement).style.backgroundColor = (f as HTMLButtonElement).style.borderColor
+      (e.target as HTMLButtonElement).style.color = "black";
+      (e.target as HTMLButtonElement).style.backgroundColor = (e.target as HTMLButtonElement).style.borderColor
       
-    })      
+        
   }   
   const Focus_class2 = (e:any) =>{
     e.preventDefault()
-    const ee = document.querySelectorAll('.btn-group.role .btn:focus') 
     const ex = document.querySelectorAll('.btn-group.role .btn') 
  
-    let selected:string;
+  
     setMshow2(false)  
     ex.forEach(f=>{
       (f as HTMLButtonElement).classList.remove("active")
     })
-    ee.forEach(f=>{
-       selected =  (f as HTMLButtonElement).value;
-      (f as HTMLButtonElement).classList.add('active')
-      if(selected === '2'){
-        setMshow2(true)   
-      }
-    })
-   
-    
+    if(!e?.target.value)
+      return
+    (e.target as HTMLButtonElement).classList.add('active')
+    if(e.target.value ==='2'){
+        setMshow2(true)
+    }
         
 
   }
@@ -104,6 +103,7 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
     try{    
         const token= await vvv?.getIdToken()
         const us = await ser1.deleteStudent(id,{'id_token':token})
+        await ser1.deleteUser(id)
         const us_data = us.data as user_mode[]  
         setUsers(us_data)
         
@@ -185,7 +185,7 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
 
    const support =()=>{
     let cool_start:any;
-    let count =10;
+    let count =0;
     try{
       cool_start = setInterval(async ()=>{
       if(count===10)
@@ -211,7 +211,7 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
       er.forEach(f=>{ 
         (f as HTMLButtonElement).classList.remove("active");
       })
-      console.log('tick')
+      console.log('tick',er.length,ec.length)
       
       
       ec.forEach(f=>{
@@ -256,6 +256,7 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
  
       
       count++
+     
 
       if(er.length && ec.length )
           clearInterval(cool_start)
@@ -364,10 +365,7 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
     const pa = new URLSearchParams(search)
     //console.log(pa);
     
-    const xrrs =()=>{
-
-    }
-
+   
   return (
     <>
       
@@ -398,10 +396,10 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
               <div onClick={Focus_class} className='btn-group classy ml-4 flex justify-around flex-wrap '>
                 {
                 class_template?.map(myclass=>(
-                  <button name="class" style={{borderColor:colorLogic(myclass),color:colorLogic(myclass),fontSize:'2rem'}} value={myclass}  className="btn btn-outline-primary">{upperOne(myclass)}</button>
+                  <button name="class" style={{borderColor:colorLogic(myclass),color:colorLogic(myclass)}} value={myclass}  className="btn but-size btn-outline-primary">{upperOne(myclass)}</button>
                 ))
                 }
-                <button name="class" style={{fontSize:'2rem'}} value="" className="btn btn-outline-light">None</button>
+                <button name="class"  value="" className="btn but-size btn-outline-light">None</button>
                
 
               </div> <br></br>
@@ -412,9 +410,10 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
       <div className="content-choice relative"> 
           <p className="topic">User role</p>
         
-          <div  onClick={Focus_class2}  className='btn-group role ml-4' > 
-            <button name="role" value="3" style={{fontSize:'2rem'}} className="btn btn-outline-light">User</button>
-            <button name="role" value="2" style={{fontSize:'2rem'}} className="btn btn-outline-info">Group Manager</button> 
+          <div  onClick={Focus_class2
+          }  className='btn-group role ml-4' > 
+            <button name="role" value="3" className="btn but-size btn-outline-light">User</button>
+            <button name="role" value="2" className="btn but-size btn-outline-info">Group Manager</button> 
           </div>
         
           <div style={{color:'#E4A11B',display:mshow2?'inline-block':'none',width:'fit-content',border:'',transform:'translate(0,15%)'}}>
@@ -441,16 +440,16 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
          
       </section> }
 
-      <div className="text-4xl text-red-500 underline decoration-solid decoration-2 decoration-red-500"> 
+      <div className="text-md text-red-500 underline decoration-solid decoration-2 decoration-red-500"> 
         SENSITIVE ZONE
       </div>
 
-      <button onClick={e=>{openModal('delete')}} style={{fontSize:'2rem'}} className="btn btn-danger"> 
+      <button onClick={e=>{openModal('delete')}} className="btn but-size btn-danger"> 
           Delete User
       </button>
       
         <div className="confirm-but">
-            <button onClick={Confirm} className="btn btn-success">Confirm</button> 
+            <button onClick={Confirm} className="btn but-size btn-success">Confirm</button> 
         </div>
 
 

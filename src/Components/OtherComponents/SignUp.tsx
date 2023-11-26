@@ -15,6 +15,7 @@ const sign = {
     left:"50%",
     width:"fit-content",
     transform:"translateX(-50%)",
+    fontSize:"0.8rem"
      
 }   as CSSProperties  
 const sign2 = {
@@ -226,7 +227,7 @@ const password_input= (e:any)=>{
             
         <div  className="relative">
             <button type="submit" style={sign} className="btn btn-outline-primary"  >Sign Up</button> 
-            <span  style={sign2} ><NavLink to="/signin" className="text-2xl underline font-bold  decoration-orange-400  text-orange-400 hover:text-orange-400 " > Login</NavLink> </span>
+            <span  style={sign2} ><NavLink to="/signin" className="text-sm underline font-bold  decoration-orange-400  text-orange-400 hover:text-orange-400 " > Login</NavLink> </span>
         </div>
 
         {/*<div style={border} className="relative">

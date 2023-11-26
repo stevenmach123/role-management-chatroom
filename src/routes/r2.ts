@@ -1,28 +1,15 @@
-import express, {Router} from "express"
+import express from "express"
 import 'firebase/firestore'
 import firebase from 'firebase/compat/app'
 
 import {db} from '../server'
- import { user_mode } from "../model";
-import { json } from "stream/consumers";
-import { URLSearchParams } from "url";
-import fs from 'fs'
-import path from "path";
-import structuredClone from "@ungap/structured-clone";
+
+
 const router = express.Router() 
 
 // TESTING ROUTES, NO EFFECT ON PROJECT
 
-const fsp = fs.promises; 
-router.get('/xii',async (req,res)=>{
-    try{
-     throw 'bad'
-    }catch(e:any){
-        return res.json(400).send('bad choice')
-    }
-      
-})
-
+/*
 router.get('/ni', async (req,res)=>{
     try{
     const da = await fsp.readFile(`${__dirname}/../data/student.json`,'utf8')
@@ -46,19 +33,21 @@ router.get('/ni', async (req,res)=>{
     console.log(nameAr.map(u=> searchAr.includes(u)).some(tr=>tr)) 
     console.log(users.at(nameAr.indexOf("linh"))?.data())
     // const rstudents =(await usersRef.get()).docs.includes(duser)
-    /*for(let [k,v] of rstudents.entries()){
+    for(let [k,v] of rstudents.entries()){
         console.log(v.data())
-    }*/
-    res.json("sucess")
+    }
+    return res.json("sucess")
     }
     catch(e){
         console.log(JSON.stringify(e))
-         res.sendStatus(400)
+        return res.sendStatus(400)
     }
     
   
     
-}) 
+}) */
+  
+/*
 router.get('/ni2', async (req,res)=>{
     const val = {name:"ser",id:20,class:"e-12",gmail:"ser@g.co"}
     const da = await fsp.readFile(`${__dirname}/../data/student.json`,'utf8')
@@ -70,18 +59,18 @@ router.get('/ni2', async (req,res)=>{
         const duser = await q1.query.where("name","==","linh").get()
         
         console.log(Array.from(duser.docs.values()).map(x=>x.data()) )
-        res.json("sucess")
+        return res.json("sucess")
     }
     catch(e){
         console.log(JSON.stringify(e))
-         res.sendStatus(400)
+        return  res.sendStatus(400)
     } 
     
 })
+*/
 
 
-
-
+/*
 router.get('/ni3', async (req,res)=>{ 
     const usersRef = db.collection("users") 
     const snap_users =  usersRef.onSnapshot(snap=>{
@@ -103,12 +92,14 @@ router.get('/ni3', async (req,res)=>{
         
      })
     
-    res.json("good ni3")
+    return res.json("good ni3")
     
     
     
 }) 
+*/
 
+/*
 router.post('/ni3', async (req,res)=>{
     try{
     
@@ -119,10 +110,10 @@ router.post('/ni3', async (req,res)=>{
         return res.status(400).json("not enough properties")
     const u  = await  usersRef.doc(name).set({name,class:Class,id,gmail})
   
-    res.json('success post ni3')
+    return res.json('success post ni3')
     }
     catch(e){
-        res.status(405).json("bad post"); console.log(JSON.stringify(e))
+       return  res.status(405).json("bad post"); console.log(JSON.stringify(e))
     }
     
 } )
@@ -138,14 +129,51 @@ router.post('/ni3', async (req,res)=>{
     
     const del_user = await usersRef.doc(id).delete()
     console.log("hurray2 ",del_user)
-    res.json('success delete ni3') 
+    return res.json('success delete ni3') 
     } 
     catch(e){
-        res.status(405).json("bad delete")
-        console.log(JSON.stringify(e))
+        return res.status(405).json("bad delete")
+    
         
     }
 })
+*/
+
+
+
+
+
+
+//----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*

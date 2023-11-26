@@ -1,3 +1,4 @@
+import React from 'react'
 import { NavLink,json,useLoaderData } from "react-router-dom";
 import { identifyRole,checkPermit,identifyRole2, colorRole } from "../../route_services/service_funs";
 import { AuthP } from "../LayOut/AuthProvider";
@@ -19,11 +20,11 @@ export default function Intro() {
 
   return (<>
     
-      <h1>WELCOME {user?.current?.name} TO MY SCHOOL</h1>
-      <h2>Your role is <span style={{color:colorRole(user?.current?.role)}}>{identifyRole2(user?.current?.role)}</span>  </h2><br></br>
+      <h2>WELCOME {user?.current?.name} TO MY SCHOOL</h2>
+      <h3>Your role is <span style={{color:colorRole(user?.current?.role)}}>{identifyRole2(user?.current?.role)}</span>  </h3><br></br>
       {checkPermit(user?.current?.role,1) ? 
         <>
-        <h2>Responsibility</h2>
+        <h3>Responsibility</h3>
         <ul style={{fontSize:'1.3rem'}}>
           <li>Manage full user information</li>
           <li>Manage users' chat activity in ChatRoom</li>
@@ -36,7 +37,7 @@ export default function Intro() {
       </>
       :checkPermit(user?.current?.role,2)?
         <>
-          <h2>Responsibility</h2>
+          <h3>Responsibility</h3>
           <ul style={{fontSize:'1.3rem'}}>
             <li>Manage user in groups assigned</li>
             <li>Manage users' chat activity in ChatRoom</li>
@@ -46,7 +47,7 @@ export default function Intro() {
         </> :
       checkPermit(user?.current?.role,3)?
         <>
-          <h2>Responsibility</h2>
+          <h3>Responsibility</h3>
           <ul style={{fontSize:'1.3rem'}}>
             <li>Join any group you want ^^</li>  
           </ul>

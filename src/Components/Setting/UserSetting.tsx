@@ -108,7 +108,7 @@ export default function UserSetting() {
   },[user])   
 
   return (
-    <section className=" bb sec-box2">  
+    <section className="bb sec-box2">  
      
        <div className="content-choice" >   
         <p className="topic">Student Information </p> 
@@ -122,10 +122,10 @@ export default function UserSetting() {
        <div className="content-choice" >    
              <p className="topic">Class</p> 
              <div onClick={Focus_class} className='btn-group classy ml-4 flex justify-around flex-wrap '>
-              <button name="class" style={{borderColor:colorLogic('lion'),color:colorLogic('lion'),fontSize:'2rem'}} value='lion'  className="btn btn-outline-primary">Lion</button>
-              <button name="class" style={{borderColor:colorLogic('cobra'),color:colorLogic('cobra') ,fontSize:'2rem'}}  value="cobra" className="btn btn-outline-primary">Cobra</button>
-              <button  name="class" style={{borderColor:colorLogic('dragon'),color:colorLogic('dragon'),fontSize:'2rem'}} value="dragon" className="btn btn-outline-primary">Dragon</button>
-              <button name="class" style={{borderColor:colorLogic('shark'),color:colorLogic('shark'),fontSize:'2rem'}} value="shark" className="btn btn-outline-primary">Shark</button>
+              <button name="class" style={{borderColor:colorLogic('lion'),color:colorLogic('lion')}} value='lion'  className="btn but-size btn-outline-primary">Lion</button>
+              <button name="class" style={{borderColor:colorLogic('cobra'),color:colorLogic('cobra')} }  value="cobra" className="btn but-size btn-outline-primary">Cobra</button>
+              <button  name="class" style={{borderColor:colorLogic('dragon'),color:colorLogic('dragon')}} value="dragon" className="btn but-size btn-outline-primary">Dragon</button>
+              <button name="class" style={{borderColor:colorLogic('shark'),color:colorLogic('shark')}} value="shark" className="btn but-size btn-outline-primary">Shark</button>
               </div> <br></br>
 
        </div>

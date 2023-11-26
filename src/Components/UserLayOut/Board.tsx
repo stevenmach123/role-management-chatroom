@@ -35,13 +35,12 @@ export const Board:React.FC =()=>{
     const [load,setLoad]  = useState<boolean>(true) 
     let current_users =type_ram.get("type") ? users.filter(u=>u.class === type_ram.get('type') ).sort((a,b)=>(a.name as any)-(b.name as any)):users.sort((a,b)=>(a.name as any)-(b.name as any))
     
-    console.log("state01 ",current_users)
+    //console.log("state01 ",current_users)
   
     function nona(){
         const rt= document.querySelectorAll(".pp");  
         if(rt){
         setUsers(my_users=> {
-            console.log(rt);
             const map_users = new Map(my_users.map(u=>[u.name,u]));
             rt.forEach((x)=>{
             const x1 = x as HTMLInputElement;

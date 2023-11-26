@@ -1,6 +1,5 @@
-import { Navigate, NavLink, Outlet } from "react-router-dom"
-import { CSSProperties, MutableRefObject, RefObject } from "react"
-import { URLSearchParams } from "url"
+import {NavLink } from "react-router-dom"
+import React,{ CSSProperties, MutableRefObject, RefObject } from "react"
 import './NavBar.css'
 import { AuthP } from './AuthProvider';
 import { checkPermit, colorRole } from "../../route_services/service_funs";
@@ -8,23 +7,22 @@ import { checkPermit, colorRole } from "../../route_services/service_funs";
 const nolink = {
     textDecoration:"none",
     color:"black",
-    fontSize:"3.2rem",
-    marginRight:"2rem",
+    
+    marginRight:"-0.1rem",
 
 } as CSSProperties
-const text = {
-    fontSize:"2.7rem"
-}as CSSProperties 
-interface myProps{
-    dec:MutableRefObject<boolean>
+
+const div = {
+    border:'1px solid red'
 }
+
 function NavBar() {
   const {user,logout} = AuthP()
 
   return (
-    <>
-     <nav  className="navbar navbar-expand" style={text}>     
-        <div className="navbar-brand"><NavLink style={nolink} to={`intro/${user?.current?.name}`}>Home</NavLink></div>
+    <div >
+     <nav  className="phone navbar navbar-expand text" >     
+        <div className="navbar-brand"><NavLink style={nolink} className="phone home-text"  to={`intro/${user?.current?.name}`}>Home</NavLink></div>
        
         <ul  className="navbar-nav">{ 
         user?.current?.role && (
@@ -52,20 +50,19 @@ function NavBar() {
 
         )}</ul>
         
-       
+      
        
 
-        <ul  className="navbar-nav ms-auto x">
-            <li style={{color:colorRole(user?.current?.role)}} className="my-auto nav-item"> 
-                Welcome {user?.current?.name}
-            </li>
-            <li className="nav-item"> 
-                <div className="dropdown"> 
-                    <div className="user_img dropdown-toggle"  data-bs-toggle="dropdown"> <img className="tuser_img" src="/user_img.png" alt="image" /></div>
-                    <div className="dropdown-menu menu">
-                    <NavLink className="dropdown-item" to={`myinfo/${user?.current?.name}`}>My info</NavLink>
-                    <NavLink className="dropdown-item" to={`updateinfo/${user?.current?.name}`}>Update info</NavLink>
-                    <a onClick={logout} style={{color:'red'}} className="dropdown-item" href="#">Logout</a>
+        <ul  className="navbar-nav ms-auto">
+           
+            <li className=" my-auto nav-item"> 
+                <div className="relative  dropdown btn-group"> 
+                    <div className=" user_img phone dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown"> <img className="tuser_img" src="/user_img.png" alt="image" /></div>
+                    <div className="dropdown-menu dropdown-menu-end menu x">
+                        <NavLink className="dropdown-item" to={`intro/${user?.current?.name}`} style={{color:colorRole(user?.current.role)}} >{user?.current.name}</NavLink>
+                        <NavLink className="dropdown-item" to={`myinfo/${user?.current?.name}`}>My info</NavLink>
+                        <NavLink className="dropdown-item " to={`updateinfo/${user?.current?.name}`}>Update info</NavLink>
+                        <a onClick={logout} style={{color:'red'}} className="dropdown-item" >Logout</a>
                     </div>
                 </div> 
                 
@@ -78,7 +75,7 @@ function NavBar() {
         
     </nav>
     
-    </>
+    </div>
   )
 }
 

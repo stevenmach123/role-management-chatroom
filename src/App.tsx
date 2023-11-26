@@ -1,6 +1,6 @@
-import './App.css';
 
 
+import React from 'react'
 import {createBrowserRouter,createRoutesFromElements, Route,RouterProvider,Outlet,Navigate,useNavigate, Routes}  from "react-router-dom"
 
 import  {NotFound} from './Components/OtherComponents/NotFound'
@@ -36,7 +36,7 @@ function App() {
       
       <Route  path="/" element={<Back/>}>
     
-      <Route index element={<En/>} />
+      <Route path="" element={<En/>} />
       <Route path="signin" element={<SignIn/>} />
       <Route path="signup" element={<SignUp/>} />
       <Route path="role" element={<Role/>}  />

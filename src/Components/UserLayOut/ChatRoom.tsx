@@ -168,14 +168,30 @@ function ChatRoom() {
         inputMe.value  = ''
     
     } 
-    const colorByGroup = (u:user_mode):string=>{
-       if(u?.manage){
-           if(u.manage.find(x=>x ===type_ram.get('type')))
-              return colorRole(u.role)
-           else
-              return 'white'
-       }else
-         return colorRole(u.role)
+    const colorByGroup = (uz:user_mode|string,...option:any[]):string=>{
+       if(!option.length){
+          const u = uz as user_mode 
+          if(u?.manage){
+              if(u.manage.find(x=>x ===type_ram.get('type')))
+                  return colorRole(u.role)
+              else
+                  return 'white'
+          }else
+            return colorRole(u.role)
+
+       }
+       else{
+          const u: user_mode |undefined  = myusers?.find((u:user_mode)=>u.id ===uz as string) 
+          if(u && u?.manage){
+            if(u.manage.find(x=>x ===type_ram.get('type')))
+                return colorRole(u.role)
+            else
+                return 'white'
+          }else
+            return colorRole(u?.role)
+       }
+
+      
     }
 
 
@@ -309,20 +325,20 @@ function ChatRoom() {
 
   return (<>{
       loading?<>Loading...</>:
-      <section className="sec-box3 mx-auto">
-          <div className="group item-box">{
+      <section className="sec-box3 mx-auto phone">
+          <div className="group item-box ">{
             allowedCate.map(cat=>
-              <div className="text_f1 pad" key={cat[0]} onClick={(e)=>typeFind(e,cat[0])} style={type_ram.get('type')===cat[0]?{color:'black',backgroundColor:cat[1],boxShadow:'0px 3px 8px 0px black'}:{}} >{cat[0]}</div>  
+              <div className="phone text_f1 pad" key={cat[0]} onClick={(e)=>typeFind(e,cat[0])} style={type_ram.get('type')===cat[0]?{color:'black',backgroundColor:cat[1],boxShadow:'0px 3px 8px 0px black'}:{}} >{cat[0]}</div>  
             )
           }</div>
-          <div className="member item-box">{
+          <div className="member item-box ">{
             users.map((u:any)=>
-              <div  onClick={e=>indi_find(u)} style={type_ram.get('user') && indi_user.current.id ===u.id?{color:colorByGroup(u),boxShadow:'0px 3px 8px 0px black',textDecoration:' 3px orange solid underline', fontWeight:'700'}:{color:colorByGroup(u)} } className="text_f1 pad" key={u?.id}>{u.name}</div> 
+              <div  onClick={e=>indi_find(u)}   style={type_ram.get('user') && indi_user.current.id ===u.id?{color:colorByGroup(u),boxShadow:'0px 3px 8px 0px black',textDecoration:' 3px orange solid underline', fontWeight:'700'}:{color:colorByGroup(u)} } className="text_f1 phone pad" key={u?.id}>{u.name}</div> 
               )
           }</div>
           <div className="message item-box relative">
 
-            <div className="absolute top-0 z-10 left-0">
+            <div className={`absolute top-0 z-10 left-0 ${!type_ram.get('user') && type_ram.get('type')?'':'no-display' }`}>
                 <button onClick={e=>clear(e)} className="btn btn-outline-info" >Clear</button> 
                 <Alert className="warn-admin" key='danger' variant='danger'>Only Admin can delete messages</Alert>
 
@@ -330,15 +346,15 @@ function ChatRoom() {
 
             {
             type_ram.get('type')?<>
-            <div className="show-msg relative">
+            <div className="phone show-msg relative">
               {
               Msg.map((msg)=>
                 msg.id !==user?.current.id?
-                  <div key={msg.docid} className="block msg-block other">
-                    <div className="msg-label"><label >{upperOneLetter(msg.name)}</label></div>
+                  <div key={msg.docid} className="phone block msg-block other">
+                    <div style={{color:colorByGroup(msg.id as string,1)}} className="msg-label"><label >{upperOneLetter(msg.name)}</label></div>
                     <div className="inline-block msg-other">{msg.text}</div>
-                  </div>:<div  key={msg.docid} className="block msg-block me">
-                    <div className="msg-label"><label  >{upperOneLetter(msg.name)}</label></div>
+                  </div>:<div  key={msg.docid} className="phone block msg-block me">
+                    <div style={{color:colorByGroup(msg.id as string,1)}} className="msg-label"><label  >{upperOneLetter(msg.name)}</label></div>
                     <div className="inline-block msg-me">{msg.text}</div>
                   </div>
               )

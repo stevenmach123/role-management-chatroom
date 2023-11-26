@@ -1,11 +1,10 @@
 import React, { createContext,useContext ,useState,useEffect,useRef} from 'react'
 import f_app,{ initializeApp } from 'firebase/app'
-import a_app,{FacebookAuthProvider, getAuth, getRedirectResult, GoogleAuthProvider, linkWithCredential, OAuthCredential, OAuthProvider, ProviderId, reauthenticateWithCredential, signInWithCredential, signInWithCustomToken, signInWithPopup, signInWithRedirect, signOut,User,UserCredential } from 'firebase/auth'
+import a_app,{FacebookAuthProvider, getAuth, getRedirectResult, GoogleAuthProvider, linkWithCredential, OAuthCredential, OAuthProvider, ProviderId, reauthenticateWithCredential, signInWithCredential, signInWithCustomToken, signInWithPopup, signInWithRedirect, signOut,User,UserCredential,onAuthStateChanged } from 'firebase/auth'
 import s_app,{ collection, doc, getDoc, getFirestore, onSnapshot, Unsubscribe,Timestamp, serverTimestamp, getDocs, addDoc,query,where } from 'firebase/firestore'
 import { firebaseConfig } from '../../route_services/service_funs'
 import { axios1, ser1 } from '../../route_services/axiosService'
-import { properties, Sleep, user_mode } from '../../model'
-import { io,Socket } from "socket.io-client";
+import {  user_mode } from '../../model'
 import SignUp from '../OtherComponents/SignUp';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,7 +14,7 @@ const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app);
 export const db = getFirestore(app)
 
-const m = createContext<{user?:React.MutableRefObject<any>,cate?:{[key:string]:string},setCate?:any,setfresh?:React.Dispatch<React.SetStateAction<number>>,fresh?:number,class_template?:string[],setMyusers?:React.Dispatch<React.SetStateAction<user_mode[]>>,myusers?:user_mode[],setSocket?: React.Dispatch<React.SetStateAction<Socket|undefined>>, signin?:(x:any)=>Promise<void>,logout?:()=>Promise<void>,vvv?:UserCredential['user'],signinG?:()=>void,signinF?:()=>void  }>({})
+const m = createContext<{user?:React.MutableRefObject<any>,cate?:{[key:string]:string},setCate?:any,setfresh?:React.Dispatch<React.SetStateAction<number>>,fresh?:number,class_template?:string[],setMyusers?:React.Dispatch<React.SetStateAction<user_mode[]>>,myusers?:user_mode[], signin?:(x:any)=>Promise<void>,logout?:()=>Promise<void>,vvv?:UserCredential['user'],signinG?:()=>void,signinF?:()=>void  }>({})
 const AuthProvider = ({children}:any)=> {
   const user = useRef<any>()
   const navigate =useNavigate()
@@ -23,7 +22,7 @@ const AuthProvider = ({children}:any)=> {
   const [cate,setCate]= useState<{[key:string]:string}>({}) 
  const  [fresh,setfresh] = useState(1)
  const class_template = ['lion','cobra','dragon','shark']
-  const [socket,setSocket] =useState<Socket>()
+
   const [vvv,setV] = useState<UserCredential['user']>()
  
  console.log(cate)
@@ -31,10 +30,10 @@ const AuthProvider = ({children}:any)=> {
   const support = async ()=>{
     try {
       const uu= await getRedirectResult(auth)
-      console.log('support provider')
+      console.log('support in provider',uu)
       if(uu){
         setV(uu?.user) 
-        console.log(uu.user.uid)
+        console.log('support redirect',uu.user.uid)
         const res = (await ser1.putOStudent(uu.user.uid)).data as any
         user.current = res.this_user
         if(res?.exist)
@@ -58,10 +57,12 @@ const AuthProvider = ({children}:any)=> {
           try{
                 
             const cred = OAuthProvider.credentialFromError(e)
-            if(getAuth().currentUser && cred){
+            console.log(getAuth().currentUser,cred)
+            if(auth.currentUser && cred){
                const uu = await linkWithCredential(getAuth().currentUser as User, cred)
                const res = (await ser1.putOStudent(uu.user.uid as string)).data as any
                user.current = res.this_user
+               setV(uu.user)
               if(res?.exist)
                 navigate('/home')
               else
@@ -86,6 +87,7 @@ const AuthProvider = ({children}:any)=> {
      
   } 
   const signin = async(body:any)=>{
+    console.log('signin')
      const token = await axios1.post('/sign_in1',body) 
      const v = await signInWithCustomToken(auth,token.data) 
      console.log(v.user)
@@ -95,26 +97,25 @@ const AuthProvider = ({children}:any)=> {
   const signinF =async ()=>{
         const provider = new FacebookAuthProvider()
         provider.addScope('email')
-        provider.addScope('public_profile')
+       // provider.addScope('public_profile')
       
          await signInWithRedirect(auth,provider)
-      
-
-         
-
+          
   } 
   const signinG = async ()=>{
     try{
       const provider = new GoogleAuthProvider()
       provider.addScope('profile')   
       provider.addScope('email') 
+      provider.setCustomParameters({
+        prompt:"select_account"
+      })
       const uu = await signInWithPopup(auth,provider)
       const cred = GoogleAuthProvider.credentialFromResult(uu) 
       console.log(cred)    
       const res  =(await ser1.putOStudent(uu.user.uid)).data as any
       user.current = res.this_user
       setV(uu.user)
-      console.log(res.exist)
       if(res?.exist)
         navigate('/home')
       else
@@ -152,6 +153,8 @@ const AuthProvider = ({children}:any)=> {
  const logout = async ()=>{
    signOut(auth).then(x=>{
       navigate('/signin')
+   }).catch(e=>{
+    navigate('/signin')
    })
  }
 
@@ -195,31 +198,31 @@ const AuthProvider = ({children}:any)=> {
       const users  = x.docs.map(u=>u.data())
       setMyusers(users)
     })
+    const auth_user  = onAuthStateChanged(auth,x=>{
+      console.log(x)
+    })
    
     support()
     
+
+
+
    const v= new Date()
    //console.log(v.getTime(),v.getMilli)
-  
+   
     
     
    return ()=>{
      myusers_sub()
      frame_color_sub()
+     auth_user()
       
    } 
   },[])
 
 
 
-  useEffect(()=>{
-    console.log("socket")
-    socket?.on('connect', ()=>{
-
-      console.log("c",socket.id)
-    })
-  },[socket])
-
+ 
   const x = async ()=>{
     console.log(">><<")
     console.log((getAuth().currentUser))
@@ -244,12 +247,12 @@ const AuthProvider = ({children}:any)=> {
   return (
     <>
   
-      <m.Provider value={{user,myusers,setMyusers,cate,setCate,setfresh,fresh,class_template,setSocket,signin, logout,vvv,signinG,signinF  }}>
-      <div className="flex gap-2">
-        <button onClick={x}className="btn">x</button>
-        <button onClick={xr}className="btn">xr</button>  
-        <button onClick={vr}className="btn">vr</button>  
-      </div>
+      <m.Provider value={{user,myusers,setMyusers,cate,setCate,setfresh,fresh,class_template,signin, logout,vvv,signinG,signinF  }}>
+      { /*<div className="flex absolute gap-2">
+        <button onClick={x}className="btn z-50">x</button>
+        <button onClick={xr}className="btn z-50">xr</button>  
+        <button onClick={vr}className="btn z-50">vr</button>  
+  </div>   */}
 
         {children}
       </m.Provider>

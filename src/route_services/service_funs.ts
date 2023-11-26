@@ -4,6 +4,7 @@ import { color_role, t_role } from "../model"
   const firebaseConfig = {
     apiKey: "AIzaSyAb-6DFnFLdWVQWt_upc8wNHSXYPINl_iU",
     authDomain: "chatroom-de811.firebaseapp.com",
+    databaseURL: "https://chatroom-de811-default-rtdb.firebaseio.com",
     projectId: "chatroom-de811",
     storageBucket: "chatroom-de811.appspot.com",
     messagingSenderId: "251906167695",
@@ -63,8 +64,8 @@ export const colorRole = (r:any):string =>{
 
 const generateId = async (num:number):Promise<string>=>{
     const id = (await axios1.get('/id')).data
-
-    let i =0  
+   
+    let i =0 ; let loop =0
     let uid:string="";
     do{
         i =0;
@@ -75,8 +76,11 @@ const generateId = async (num:number):Promise<string>=>{
             uid += d.toString()
             i++
         }
-    }while(Array.from(id).find(d=> d ===uid) )
-    
+        ++loop
+    }while(Array.from(id).find(d=> d ===uid) && loop<5000 )
+    if(loop ===5000 ){
+      throw 'max user exceed'
+    }
     return uid
   }
 

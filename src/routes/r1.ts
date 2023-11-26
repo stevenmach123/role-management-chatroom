@@ -4,10 +4,8 @@ import express, {Router} from "express"
 import {db} from '../server'
  import { Sleep, user_mode } from "../model";
 import { URLSearchParams } from "url";
-import fs from 'fs'
-import path from "path";
+
 import {colorLogic, generateId, identifyRole} from '../route_services/service_funs'
-import { admin_app } from "../server";
 import * as admin from 'firebase-admin'; 
 import a_app,{ Auth, ProviderId, signInWithCustomToken  } from "firebase/auth";
 import { vertify } from './vertify';
@@ -15,18 +13,24 @@ import { DocumentData } from "firebase/firestore";
 import UpdateInfo from '../Components/AddUser/UpdateInfo';
 import { UserInfo } from "firebase-admin/lib/auth/user-record";
 import crypto from 'crypto'
+
 //admin.firestore();
  const router = Router();
 
 
 router.post('/sign_in1',async  (req,res)=>{
     const student = req.body as user_mode
-    const token =  await admin_app.auth().createCustomToken(student.id as string,student)
+    const token =  await admin.auth().createCustomToken(student.id as string,student)
     
     return res.json(token)
     
 
 } )
+router.delete('/delete_user/:uid',async (req,res)=>{
+    const uid = req.params.uid
+    await admin.auth().deleteUser(uid)
+    res.json("delete user success")
+})
 
 
 
@@ -34,13 +38,13 @@ router.put('/o_student/:uid', async (req,res)=>{
     try{
     
     const uid = req.params.uid
-    const user = await admin_app.auth().getUser(uid)
+    const user = await admin.auth().getUser(uid)
 
     const userRef =  db.collection('users')
     const duser  =await  userRef.where('email','==',user.email).get()
     
     const id_help =(...id:any) =>{
-        const g =  user.providerData.find(p=> p.providerId===ProviderId.GOOGLE)
+        const g =  user.providerData.find(p=>  p.providerId===ProviderId.GOOGLE)
         const proD = user.providerData.find(p =>p.uid ===id[0]) 
         if(proD?.providerId  !== ProviderId.GOOGLE){
             if(g){
@@ -121,7 +125,7 @@ router.put('/o_student/:uid', async (req,res)=>{
     proD_key.phoneNumber =''
     const this_user = (await userRef.doc(proD_key.uid).get()).data()
     
-    await admin_app.auth().setCustomUserClaims(uid,{
+    await admin.auth().setCustomUserClaims(uid,{
         email: user.email,id:proD_key.uid,proD_key :proD_key
     })
     res.json({this_user,exist })   
@@ -140,6 +144,7 @@ router.get('/testt',async (req,res)=>{
     const result = v.docs.map(x=>x.data())
     res.json(result)
 })
+
 
 
 
@@ -179,7 +184,7 @@ router.get('/student',async(req,res)=>{
     }
     catch(e){
         console.log("error student get",e);
-        res.status(405).json(JSON.stringify(e))
+        return res.status(405).json(JSON.stringify(e))
     }
 
 })
@@ -212,8 +217,10 @@ router.put('/student',async(req,res)=>{
     })  */
     }
     catch(e){
-        console.log("error student put")
-        res.status(400).send()
+        if(e ==='max user exceed')
+            return res.status(409).json('get id- max user exceed')
+
+        return res.status(400).json("error student put")
     }
 
 } )
@@ -228,7 +235,7 @@ router.get('/getall',vertify,async (req,res)=>{
         
         let myusers = users.docs.map(u=>u.data())
         
-         res.json(myusers);
+        return res.json(myusers);
         
         /*
         
@@ -264,7 +271,7 @@ router.get('/normal_student',vertify,async (req,res)=>{
 
 
 router.post('/student',vertify,async (req,res)=>{
-    const obj = req.body
+    const obj = req.body as any
     
     try{
         const users = await  db.collection('users').where('id',"==",obj?.id).get()
@@ -283,10 +290,10 @@ router.post('/student',vertify,async (req,res)=>{
         if(identifyRole(myuser?.role) !== 2 && identifyRole(myuser?.role) !== -1)
             await userRef.update({manage:admin.firestore.FieldValue.delete()})
 
-        res.json({message:"post student success",student:myuser,allstudent:all_users })
+        return res.json({message:"post student success",student:myuser,allstudent:all_users })
     }catch(e:any){
         console.log("post student error",JSON.stringify(e))
-        res.status(400).json({message:JSON.stringify(e)})
+        return res.status(400).json({message:JSON.stringify(e)})
     }
     
 })
@@ -323,7 +330,7 @@ router.post('/student_update',async (req,res)=>{
     } 
     catch(e){
         console.log(JSON.stringify(e))
-         res.status(403).json('student_update error')
+        return  res.status(403).json('student_update error')
     }
     
 })
@@ -397,9 +404,9 @@ router.post('/types',async (req,res)=>{
         const types = req.body as string[]
         const typeRef= db.collection('type_frame')
         for(let type of types){
-            console.log(type)
+            //console.log(type)
             let doc= await typeRef.where(admin.firestore.FieldPath.documentId(),'==',type).get()
-            console.log('type2')
+            //console.log('type2')
             if(doc.empty && type){
                 await typeRef.doc(type).set({color:colorLogic(type)})
             }
@@ -410,7 +417,7 @@ router.post('/types',async (req,res)=>{
     }
     catch(e){
             console.log("error types post",JSON.stringify(e)) 
-            res.status(405).json({message:JSON.stringify(e)}) 
+        return res.status(405).json({message:JSON.stringify(e)}) 
         }
 })
 
@@ -425,10 +432,10 @@ router.delete('/type/:type',async (req,res)=>{
         const typeRef= db.collection('type_frame')
         await typeRef.doc(type).delete() 
        
-        res.json("delete type sucess")
+        return res.json("delete type sucess")
     }
     catch(e){
-        res.status(405).json('delete type fail')
+        return res.status(405).json('delete type fail')
     }
 
 })
@@ -437,20 +444,23 @@ router.delete('/type/:type',async (req,res)=>{
 router.get('/id',async (req,res)=>{ 
     try {
         const userRef =  db.collection('users')
-        const users = userRef.where('id','!=',null).get()
-        res.json(users)
+        const users = await userRef.where('id','!=',null).get()
+        const id_ar =  users.docs.map(x=> x.get('id'))
+        return res.json(id_ar)
     }
     catch(e){
-         res.status(400).json('get id- no see any id')
+    
+        return res.status(400).json('get id- no see any id')
+
     }
 })
 
 router.get('/crypto',async (req,res)=>{
     try{
        const v =  crypto.randomBytes(10).toString('hex')
-        res.json(v)
+        return res.json(v)
     }catch(e){
-        
+        return res.status(401).json("no crypto")
     }
 })
 
@@ -476,12 +486,12 @@ router.post('/regis/:obj',async (req,res)=>{
         }
         const users = (await userRef.get()).docs.map(u=>u.data())
         
-        res.json(users)
+        return res.json(users)
       
     }
     catch(e){
         console.log("error regis") 
-        res.status(401).json(JSON.stringify(e))  
+        return res.status(401).json(JSON.stringify(e))  
     }
 })
 
@@ -587,8 +597,3 @@ router.post('/regis/:obj',async (req,res)=>{
 
 */
 
-router.get('/xi',async (req,res)=>{
-    const ref= await db.collection('test1').doc('a').get()
-    res.json(ref.data())
-    
-})

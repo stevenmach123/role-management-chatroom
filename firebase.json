@@ -1,0 +1,52 @@
+{
+  "functions": [
+    {
+      "source": ".",
+      "codebase": "default",
+      "ignore": [
+        "**/node_modules/**",
+        ".git",
+        ".gitignore",
+        "gcloud init",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "functions",
+        "lib"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ],
+      "runtime":"nodejs18"
+    }
+  
+    
+  ],"hosting":{
+    "site":"chatroom-de811",
+    "public": "build",
+    "ignore": [
+      "lib",
+      ".gitignore",
+      ".git",
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "gcloud init",
+      "functions",
+      "firebase-debug.log",
+      "firebase-debug.*.log"
+
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+
+  
+
+
+
+
+}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink, useAsyncError, useRouteError } from 'react-router-dom'
+import { NavLink, useRouteError } from 'react-router-dom'
 
 export default function ErrorUser() {
   const x = useRouteError() as unknown as any;
