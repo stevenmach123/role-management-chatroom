@@ -2,14 +2,14 @@ import { axios1 } from "./axiosService"
 import { color_role, t_role } from "../model"
 
   const firebaseConfig = {
-    apiKey: "AIzaSyAb-6DFnFLdWVQWt_upc8wNHSXYPINl_iU",
-    authDomain: "chatroom-de811.firebaseapp.com",
-    databaseURL: "https://chatroom-de811-default-rtdb.firebaseio.com",
-    projectId: "chatroom-de811",
-    storageBucket: "chatroom-de811.appspot.com",
-    messagingSenderId: "251906167695",
-    appId: "1:251906167695:web:2e0df37d3398811b48b1fa",
-    measurementId: "G-GLZ4K7DZ4Q"
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: ""
   }
 
 export const checkPermit = (roles:{[key:string]:number},...allowedRoles:number[]):boolean=>{
