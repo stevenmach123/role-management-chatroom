@@ -1,5 +1,5 @@
 ## Link
-[https://chatroom-de811.web.app/](https://chatroom-de811.web.app/)  Mobile view also available :) 
+[https://chatroom-de811.web.app/](https://chatroom-de811.web.app/)   Mobile view also available :)
 ## Step to reproduce
 ### npm package
 - install npm package, if your local machine don't have it yet. https://nodejs.org/en/download
