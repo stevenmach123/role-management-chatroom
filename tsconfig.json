@@ -31,6 +31,9 @@
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   //"hidden":true,
-  "include": ["src"],
-  "exclude":["src/Components/LayOut","src/Components/AddUser","src/Components/OtherComponents","src/data","src/App.*","src/index.*"]
+  "include": ["src"]
+ // "exclude":["src/Components/LayOut","src/Components/AddUser","src/Components/OtherComponents","src/data","src/App.*","src/index.*"]
 }
+
+
+

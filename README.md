@@ -1,25 +1,27 @@
-
-### `npm dev`
-
-Runs the app in the development mode. Open [http://localhost:4002](http://localhost:4002) to view it in the browser.\
-Next, type  "npm run dev"
-Wait for the webpage from web to pop up. 
-
-
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Link
+   [https://chatroom-de811.web.app/](https://chatroom-de811.web.app/)   Mobile view also available :)
+## Step to reproduce
+  Link: [here](https://docs.google.com/document/d/1IxNiWsmE-X5t2-CrKTQ8kuNW9fpzrY0Rcxd-rjcwTZo/edit?usp=sharing)
+## Project Stack 
+  * Font End: React, Typescipt, React bootstrap, TailwindCSS
+  * API/Service: Axios,Socket IO
+  * Backend/Database : NodeJS, Express, Firebase Authentication, Firestore (RealTime)
+    
+## What is the project ?
+  * The project stimulate the role based information chatroom, where admins capable of  overseeing/controling users’ activities on different groups and facilitating community engagement among users.
+  * Users and group manger can freely chat within members of their group. Also they can switch group when desire.
+    
+## Core functionality of the project
+  1. Admin can change essential info of Users and Group Mangers
+      * Admin can view rest of users info, such as password/group/role etc. 
+      * When Admin delete or modify group/role of User/Group Manger, the change will reflect to those users immediately 
+      * Admin can promote user to Group Manager, via versa 
+      * Admin can assign authorized group to Group Manager, so Group Managers can help manage User with Admin.
+  2. Group Manger control some part of User information
+      * Group Manger can see all users within authorized group  and allow to kick users out of their group.Eg. We can think users speak something bad in ChatRoom
+      * But limited access to essential info of User, eg. Passwords 
+  3. Authentication implemented  between OAuth and SignInWithCustomToken(using self sign in/sign up information)
+  4. Chatroom, users can communicate together within group assigned.
+      * Users can communicate within assigned group, but they can also communicate with individual/
+      (Individuality chat funtionality functioned thanked to Observable of Firestore aka RealTime Database)
+      * Admin and Group Manager can freely switch between their authorized group to manage users activities 
