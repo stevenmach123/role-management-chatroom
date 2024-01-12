@@ -2,13 +2,14 @@
     box-sizing: content-box;
 }
 
+
 .text {
     font-size:2rem
 }
 .home-text{
     font-size:2.2rem;
 }
-@media (width <=400px){
+@media (width <=550px){
     .text.phone{
         font-size: 1.6rem;
     }
@@ -16,7 +17,7 @@
         font-size: 1.7rem
     }
     .user_img.phone{
-        max-width:4rem;
+        width:clamp(3rem,3rem,4rem);
     }
 }
  
@@ -34,6 +35,7 @@ li.nav-item + li.nav-item{
     max-height:3rem;
     border-radius: 50%;
     overflow: hidden;
+    color:none;
   
 }
 

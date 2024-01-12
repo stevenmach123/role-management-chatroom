@@ -1,4 +1,4 @@
-import React,{ useEffect } from 'react';
+import React,{ CSSProperties, useEffect } from 'react';
 import NavBar from "./NavBar"
 import { Navigate, Outlet } from 'react-router-dom';
 import { AuthP } from './AuthProvider';
@@ -6,8 +6,11 @@ import { AuthP } from './AuthProvider';
 
 
 const v = {
-  border:'1px solid red'
-}
+  border:'1px solid none',
+  height:'99vh',
+  display:'flex',
+  flexDirection:'column'
+} as CSSProperties
 
 function Home() {
   const {user} = AuthP()
@@ -17,11 +20,11 @@ function Home() {
       
   },[])
 
-  return (<> 
+  return (<section style={v}> 
     <NavBar ></NavBar>
     <Navigate to={`intro/${user?.current.name}`}></Navigate>
     <Outlet></Outlet> 
-  </>)
+  </section>)
 }
 
 export default Home

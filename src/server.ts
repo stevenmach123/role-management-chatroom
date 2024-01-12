@@ -16,7 +16,7 @@ import  cookieParser  from 'cookie-parser';
 //import  {onRequest} from "firebase-functions/v2/https";
 
 
-
+dot.config()
 const app = express();
 
 const admin_app = admin.initializeApp({
@@ -48,10 +48,10 @@ app.use('/msg',ioo)
 
 console.log(process.env.PORT)
 const PORT = properties.ser_port ||8080;
-app.listen(PORT, () => {
+/*app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
-});    
-
+}); */    
+  
 export const chatappgc = app
 //export const chatapp = onRequest({},app)
 

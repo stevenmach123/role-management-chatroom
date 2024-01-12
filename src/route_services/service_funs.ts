@@ -1,5 +1,9 @@
-import { axios1 } from "./axiosService"
-import { color_role, t_role } from "../model"
+import { axios1, ser1 } from "./axiosService"
+import { color_role, f2, t_role, user_mode } from "../model"
+
+import { MutableRefObject } from 'react';
+import { NavigateFunction,Path } from "react-router-dom";
+import { Url } from "url";
 
   const firebaseConfig = {
     apiKey: "",
@@ -38,8 +42,8 @@ export const identifyRole2 =(roles:{[key:string]:number}):string=>{
 }
 export const identifyRole  = (r:any):number=>{
   try{
-    const roles = r as  {[key:string]:number}
-    if(roles){
+    const roles:{[key:string]:number} = r;
+    if(roles  && Object.entries(roles).length !==0){
        return Math.min(...Object.values(roles))
     }
     throw 'bad identifyRole' 
@@ -50,7 +54,7 @@ export const identifyRole  = (r:any):number=>{
 }
 export const colorRole = (r:any):string =>{
    try{
-    const roles = r as  {[key:string]:number}
+    const roles:{[key:string]:number} = r 
     const idx = identifyRole(roles)
     if(idx === 1   || idx===2)
       return color_role.get(idx) as string      
@@ -133,17 +137,54 @@ const construct_role = (val:number[])  =>{
     }
       
 }
-const openModal = (target:string)=>{
+
+///
   
-  const wrapper = document.querySelector(`.wrapper#${target}`)
-  const modal = document.querySelector(`.modall#${target}`)
+const sort_sup = (user:React.MutableRefObject<any>|undefined,a:user_mode,b:user_mode)=>{
+  if(a.id ===user?.current.id)
+    return -1
+  if(b.id ===user?.current.id)
+    return 1;
+  return (a.name as any) - (b.name as any)
+}
+
+
+
+  
+
+
+
+
+///
+
+const openModalTimeOut = (target:string,wrap:string='wrapper',ms:number=1000)=>{
+  
+  const wrapper = document.querySelector(`.${wrap}#${target}`)
+  const wrappers = document.querySelectorAll(`.${wrap}#${target}`)
+
+  const modal = document.querySelector(`.${wrap} .modall#${target}`)
+  wrapper?.classList.add('active')
+  modal?.classList.add('active')
+  
+  setTimeout(()=>{
+    modal?.classList.remove('active')
+    wrappers.forEach(f=>{
+      (f as HTMLElement).classList.remove('active')
+    })
+  },ms)
+}
+
+const openModal = (target:string,wrap:string='wrapper')=>{
+  
+  const wrapper = document.querySelector(`.${wrap}#${target}`)
+  const modal = document.querySelector(`.${wrap} .modall#${target}`)
   wrapper?.classList.add('active')
   modal?.classList.add('active')
   
 }
-const closeModal = (target:string)=>{
-  const wrapper = document.querySelectorAll('.wrapper')
-  const modal = document.querySelector(`.modall#${target}`)
+const closeModal = (target:string,wrap:string='wrapper')=>{
+  const wrapper = document.querySelectorAll(`.${wrap}`)
+  const modal = document.querySelector(`.${wrap} .modall#${target}`)
   wrapper.forEach(f=>{
     (f as HTMLElement).classList.remove('active')
   })
@@ -160,4 +201,4 @@ const upperOne =(a:any)=>{
 }
 const toen ={t:''} 
 
-export {generateId,construct_role,firebaseConfig,colorLogic,openModal,closeModal,upperOne,toen}
+export {generateId,sort_sup,construct_role,firebaseConfig,colorLogic,openModal,closeModal,openModalTimeOut,upperOne,toen}

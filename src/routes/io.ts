@@ -117,4 +117,5 @@ router.delete('/types/:type',vertify,vertifyRole,async (req,res)=>{
 
 } )
 
+
 export default router

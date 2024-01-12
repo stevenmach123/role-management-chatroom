@@ -4,42 +4,71 @@
 .text {
     font-size:2rem;
 }
-@media (width <=400px){
+@media (width <=550px){
     .text.phone{
         font-size: 1.6rem;
     }
     
 }
+.sign{
+    max-width:90%;
+    width: fit-content;
+}
+.div_adjust{
+    flex-grow: 1;
+    display:flex;
+    flex-direction: column;
+    
+}
+.final_scroll_adjust{
+    position:absolute;
+    height:100%;
+    border:1px solid none;
+    overflow-y:scroll ;
+}
+.nav_adjust {
+    border:1px solid  none;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    line-height: 100%;
+}
 
+.take_top {
+    display:relative;
+
+    
+}
 
 .bb{
     width: 98%;
+    
+    
 }
 .tar_block{
     margin-top:1.5rem;
+
 }
 .tar_block:first-child{ 
     margin-top:0px;
 }
 .sec-box{
     display:grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 0.64fr;
     box-shadow: 0px 0px  8px 0px white;
-    height:67vh;
+   
     
-    .item-box{
-        overflow-y:scroll;
-       
-    }
+   
     .item-box.one{ 
         box-shadow: 3px 0px  8px 0px white;
-    
+        overflow-y: scroll;
     }
+    
     
 }
 .sec-box2{
     
     box-shadow: 0px 0px  8px 0px white;
+   
 }
 
 

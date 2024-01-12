@@ -8,6 +8,7 @@ import { colorRole, identifyRole, upperOneLetter } from '../../route_services/se
 import s_app,{ onSnapshot, doc, Unsubscribe, collection, Timestamp, serverTimestamp, query, orderBy, getDocs, getDoc, where, addDoc, setDoc } from 'firebase/firestore';
 import Alert from 'react-bootstrap/Alert';
 import qs from 'qs'
+import { res1 } from "../../route_services/type";
 
 
 
@@ -32,6 +33,7 @@ function ChatRoom() {
     })
   }
   useEffect(()=>{
+  
       const x = myusers && type_ram.get('type') ? myusers.filter(u=>u?.class === type_ram.get('type') || (u?.manage  && u.manage.includes(type_ram.get('type') as unknown as string)) || identifyRole(u.role)===1    ):[]  
       x.sort(sort_sup)
       setUsers(x)    
@@ -325,7 +327,7 @@ function ChatRoom() {
 
   return (<>{
       loading?<>Loading...</>:
-      <section className="sec-box3 mx-auto phone">
+      <section className="sec-box3 mx-auto phone div_adjust">
           <div className="group item-box ">{
             allowedCate.map(cat=>
               <div className="phone text_f1 pad" key={cat[0]} onClick={(e)=>typeFind(e,cat[0])} style={type_ram.get('type')===cat[0]?{color:'black',backgroundColor:cat[1],boxShadow:'0px 3px 8px 0px black'}:{}} >{cat[0]}</div>  

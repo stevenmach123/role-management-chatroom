@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "type": "commonjs",
-    "main": "lib/server.js",
+    
     "dependencies": {
         "@socket.io/admin-ui": "^0.5.1",
         "@testing-library/jest-dom": "^5.16.5",
@@ -48,10 +48,11 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build1":"react-scripts build",
+        "build1": "react-scripts build",
         "build": "tsc",
         "dev": "concurrently  \"tsc --watch\" \"npm start\"  \"nodemon src/server.ts\" ",
-        "deploy": "gcloud functions deploy chat-app2 --entry-point chatappgc --runtime nodejs18 --trigger-http"
+        "deploy": "gcloud functions deploy chat-app2 --entry-point chatappgc --runtime nodejs18 --trigger-http",
+        "dev2": "nodemon src/server.ts"
     },
     "eslintConfig": {
         "extends": [
@@ -82,6 +83,7 @@
         "nodemon": "^3.0.1",
         "path": "^0.12.7",
         "postcss": "^8.4.28",
-        "tailwindcss": "^3.3.3"
+        "tailwindcss": "^3.3.3",
+        "ts-node": "^10.9.2"
     }
 }

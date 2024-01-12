@@ -15,7 +15,7 @@
 
 }
 
-@media (width <=450px){
+@media (width <=550px){
     .back-phone{
         width:100%;
         box-sizing: border-box;
@@ -38,8 +38,12 @@
     align-items: center;
     color:black
 
-    
-
+}
+.wrapper.wrap2{
+    position:absolute;
+    color:none;
+    display:block;
+    padding-top: 0.8rem;
 }
 .wrapper.active{
     opacity:1 ;
@@ -47,8 +51,7 @@
 }
 .modall.active{
     transform: scale(1);
-    
-    
+   
 }
 
 .modall{
@@ -57,7 +60,7 @@
     border:1px solid  black;
     background-color: white;
     width:500px;
-    max-width: 80%;
+    max-width: 74%;
     padding:10px;
     transition: 500ms ease-in-out ;
     
@@ -87,6 +90,19 @@
 
   
 }
+
+
+.suc_wrapper{
+   position:absolute;
+    left:50%;
+    transform: translateX(-50%);
+    opacity: 0;
+}
+.suc_wrapper.active{
+    opacity: 1;
+    pointer-events: all;
+}
+
 .no_button {
     border:none;
     outline:none;

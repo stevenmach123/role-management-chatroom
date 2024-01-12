@@ -4,12 +4,9 @@ import { ser1 } from '../../route_services/axiosService';
 import  './AddUser.css';
 import { AuthP } from '../LayOut/AuthProvider';
 import { useNavigate } from 'react-router-dom'
+import Sign from '../OtherComponents/Sign';
 
-const submitted = ()=>{
-   /* ser1.postStudent().catch(e=>{
-        
-    }) */
-}
+
 
 interface er_ar  {
     name?:string;
@@ -104,9 +101,10 @@ export default function UpdateInfo() {
 } as CSSProperties
 
   return (<>
-    <div>
-      <div>Note: Can choose to update 1 or both field</div>
+    
       <form onSubmit={submit} className="mb-5 w-1/2 mx-auto">
+       <Sign message={<div>Note: Can choose to update 1 or both field</div>} />
+
         <div className='form-group'> 
         <label>Name</label>
         <input ref={name_ref} className="form-control" name="name" ></input>
@@ -143,6 +141,6 @@ export default function UpdateInfo() {
     </div>
 
 
-    </div>
+    
    </>)
 }

@@ -1,20 +1,26 @@
 import { isAxiosError } from "axios";
-import { Suspense, useEffect,useState,Dispatch } from "react";
+import { Suspense, useEffect,useState} from "react";
 import { Await, defer, json, Path, useActionData, useAsyncError, useAsyncValue, useLoaderData, useLocation, useParams, useResolvedPath, } from "react-router-dom"
 import {ser1 } from "../../route_services/axiosService";
 import ErrorUser from "../OtherComponents/ErrorUser";
 import "./User.css"
+
 import {useOutletContext,useNavigate,useSearchParams,Navigate} from 'react-router-dom'
 import { AuthP, auth } from '../LayOut/AuthProvider';
-import { construct_role,colorLogic, identifyRole,identifyRole2, openModal,closeModal, upperOne, toen } from "../../route_services/service_funs";
-import { pro, Sleep, user_mode } from "../../model";
+import { construct_role,colorLogic, identifyRole,identifyRole2, openModal,closeModal, upperOne, toen, openModalTimeOut, } from "../../route_services/service_funs";
+import { pro, Sleep, user_mode,vx,f2 } from "../../model";
 import  '../LayOut/Back.css';
+import { mock_error_api } from "../../route_services/service_funs2";
+import { res1 } from "../../route_services/type";
+import Sign from '../OtherComponents/Sign';
+import { where } from 'firebase/firestore';
+
 let height_manage:number = 0;
 export async function loader(seg:any){
   
   //throw json("bonjo error",{status:402});
   //throw {error:"dd"};
-   
+  
   //return ser1.getStudent(seg.params.obj).then(x=>{console.log("-",x.data); return json("xx",{status:400}) ;return json(JSON.stringify({error:'hi'}),{status:400})  })   //not good
    //return defer({mt:ser1.getStudent(seg.params.obj).then(x=>{console.log("-",x.data);throw json({error:'hi'},{status:200}) }) })  // remember have errorElement={<></>} or x.catch()
   //return defer({mt:ser1.getStudent(seg.params.obj).then(x=>{console.log("-",x.data); /*return {data:"bad made up",error:404} }*/   }) })
@@ -48,13 +54,13 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
   const x =useLoaderData() as unknown as any
   const {class_template,vvv,user} = AuthP()
   const [stu,setStu] = useState<any>()
-  const {setUsers,users,current_path} = useOutletContext() as {setUsers:Dispatch<React.SetStateAction<user_mode[]>>,users:user_mode[],current_path:Path,this_path:Path}
+  
+  const {support_set_users,users,f,current_path} = useOutletContext<vx>()
   const navigate = useNavigate()
   const [type_ram,setType] = useSearchParams()
 
   const [mshow,setMshow] = useState<boolean>(true);
   const [mshow2,setMshow2] = useState<boolean>(false);
-  console.log('student',stu)
 
    const Focus_class = (e:any)=> {
     e.preventDefault()
@@ -98,62 +104,6 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
 
   }
 
-  const Del = async (id:string)=>{
-        
-    try{    
-        const token= await vvv?.getIdToken()
-        const us = await ser1.deleteStudent(id,{'id_token':token})
-        await ser1.deleteUser(id)
-        const us_data = us.data as user_mode[]  
-        setUsers(us_data)
-        
-        let my_type =stu?.class as string
-        let users_exist =us_data.find(u=> u.class === my_type)
-        if(users_exist){
-          if(!type_ram.get('type')){
-             navigate(`${current_path.pathname}`)
-          }
-          else if( type_ram.get('type')){
-               navigate(`${current_path.pathname}?${type_ram}`)
-          }
-          else {
-              navigate(`${current_path.pathname}`) 
-          }
-
-        }else{
-          await ser1.deleteType(my_type );
-          if( !type_ram.get('type')){
-             navigate(`${current_path.pathname}`) 
-          }
-          else if(type_ram.get('type') === my_type ){
-              navigate(`${current_path.pathname}`)
-          }else 
-             navigate(`${current_path.pathname}?${type_ram}`)
-        
-        }
-        let ob_ram = new URLSearchParams({id:id}) 
-        await ser1.delete_indi_structure(ob_ram)
-
-          
-    }  
-    catch(e:any){
-        if(!e?.response)
-            console.log('Delete server error ',e)
-        else if(e.response.status ===403){
-            console.log('Delete student not success',e.response.data) 
-        }
-        else if(e.response.status === 405){
-            console.log("Delete type not success",e.response.data)
-        }
-        else if(e.response.status === 415)
-            Navigate({to:'/signin'})
-        else if(e.response.status === 402){
-          console.log('indi structure delete er',e)
-        }
-    }
-    
-         
-}
 
 
 
@@ -163,11 +113,11 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
     x.mt.then((t:any)=>{ 
       
       if(t.ok){
-        console.log("success")
+        //console.log("success")
         //console.log(t.json()) not work, not sure why even t.ok = true/false
       }
       else{
-        console.log("unsuccessful")
+        //console.log("unsuccessful")
         if(t.response || t.request){
             console.log(t)
             return "no no"
@@ -274,6 +224,54 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
       support()
    },[x.mt])
    
+
+   const Del = async (id:string)=>{
+        
+    try{    
+        const token= await vvv?.getIdToken()
+        await f?.fun<string,string,{}>({endpoint:'deleteStudent',datas:id,params:{'id_token':token},note:"deleteStudent"})
+        await f?.fun<string,string,{}>({endpoint:'deleteUser',datas:id})
+        
+        const us_users = await support_set_users()
+        
+        let my_type =stu?.class as string
+        let users_exist =us_users?.find(u=> u.class === my_type)
+        if(users_exist){
+          if(!type_ram.get('type')){
+             navigate(`${current_path.pathname}`)
+          }
+          else if( type_ram.get('type')){
+               navigate(`${current_path.pathname}?${type_ram}`)
+          }
+         
+
+        }else{
+          
+          await f?.fun<string,string,{}>({endpoint:'deleteType',datas:my_type})
+          if( !type_ram.get('type')){
+             navigate(`${current_path.pathname}`) 
+          }
+          else if(type_ram.get('type') === my_type ){
+              navigate(`${current_path.pathname}`)
+          }else 
+             navigate(`${current_path.pathname}?${type_ram}`)
+        
+        }
+        let ob_ram = new URLSearchParams({id:id}) 
+        
+        f?.fun({endpoint:'delete_indi_structure',datas:ob_ram,note:'indi_structure'})
+      
+
+          
+    }  
+    catch(e:any){
+      mock_error_api({error:e,'where':'user'})
+    }
+    
+         
+}
+
+
     const Confirm  = async (e:any)=>{
       e.preventDefault()
 
@@ -285,7 +283,7 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
       bodies['class'] = ''
       bodies['role'] = '3'
       bodies['manage'] =[]
-      
+     
       try{
         if(!classy || !role)
           throw "missing one choice"  
@@ -305,45 +303,40 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
       param.set('id',stu?.id)
       bodies['name'] =  stu?.name  
       bodies['id'] = stu?.id
-
-      const student = await ser1.getNStudent(param,{'id_token':token})
-      const old_class = (student.data as user_mode).class
-      const ref= await ser1.postStudent(bodies,{'id_token':token}) 
-      const new_class = (ref.data as any).student.class
-      const all_student = (ref.data as any).allstudent
-
-
-      if(new_class)
-        await ser1.postTypes([new_class])
+      openModal('user_load_notice')
+      f?.setGenLoading(true)
+      let student =  await f?.fun<user_mode,{},{}>({endpoint:'getNStudent',datas:param,params:{'id_token':token},note:'confirm user'}) 
+      const old_class = student?.class
+      const ref= await f?.fun<res1,{},{}>({endpoint:'postStudent',datas:bodies,params:{'id_token':token},note:'confirm user' }) 
+      const new_class = ref?.student.class
+    
+  
+      new_class &&  await ser1.postTypes([new_class])
+      
       
       if(old_class !==new_class && old_class){
-          const types = await ser1.getAllTypes();
-          let cond = (types.data as string[]).find(type => type ===old_class)
+          const types = await f?.fun<string[],{},{}>({endpoint:'getAllTypes'})
+          let cond = types?.find(type => type ===old_class)
           if(!cond){
-            await ser1.deleteType(old_class)
-            if(type_ram.get('type') === old_class)
-              navigate(`${current_path.pathname}`)
+            console.log(await f?.fun({endpoint:'deleteType',datas:old_class}))
+           
           }
           
       }
-      setUsers(all_student)
-      /*
-          cobra  -> none/
-      */
-
+      
+      support_set_users()
+      
       }
       catch(e:any){
-          if(e?.response ){
-            console.log("edit user",e.response.status ,e.response.data)
-            if(e.response.status===415)
-              Navigate({to:'/signin'})
-          }
-          else
-            console.log("edit user",e)
-
+          mock_error_api({error:e,where:'confirm user'})
+      }finally{
+       closeModal('user_load_notice')
+       f?.setGenLoading(false)
+       openModalTimeOut('user_update_notice','suc_wrapper',1000)
       }
 
     }
+
    useEffect(()=>{
        const box = document.querySelector('.manage-choice') 
        console.log(mshow,height_manage)
@@ -363,18 +356,23 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
 
     const pa2 = new URLSearchParams(param.obj)
     const pa = new URLSearchParams(search)
-    //console.log(pa);
     
    
   return (
-    <>
-      
-
-      <Suspense fallback={<span>Waiting...</span>}>
+    <div  style={{position:'absolute',top:'0',bottom:'0',overflowY:'scroll',width:'100%',border:'2px solid none'}}>
+     
+    
+      <Suspense fallback={<section className="sign"><Sign info="loading" message={<>Loading...</>}></Sign> </section>  }>
       <Await resolve={x.mt} errorElement={<ErrorUser></ErrorUser>} >
       {(student)=>(
-      <section className="px-4 py-2">  
-         
+      <section className="px-4 py-2 relative"> 
+        
+         <div   id="user_load_notice" className="wrapper wrap2">
+          <div className="sign absolute left-1/2 -translate-x-1/2 "><Sign message={<>Processing...</>}></Sign></div>
+        </div>
+        <div  id="user_update_notice" className="sign suc_wrapper"><Sign info='success' message={<>Updated</>}></Sign></div>
+    
+
          <div className="content-choice" >    
              <p className="topic">Student Information </p>
              <div className="ml-4 list-decimal">
@@ -472,8 +470,8 @@ export  const User:React.FC<props> =  ({rx}:props) =>{
        </section>
       )}
       </Await>
-      </Suspense>
-    </>
+      </Suspense>  
+    </div>
   )
 }
 

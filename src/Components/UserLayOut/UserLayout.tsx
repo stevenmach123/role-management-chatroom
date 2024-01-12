@@ -5,28 +5,32 @@ import './UserLayout.css'
 
 
 const div = {
-  border:'1px solid none'
+  border:'1px solid orange'
+} as CSSProperties
+const div2 = {
+  border:'1px solid aliceblue'
 } as CSSProperties
 export function UserLayout() {
 
-  
+
   return (
   
-    <div>
-    <section className="relative bottom-4">
-      <nav className="navbar navbar-expand p-0 text phone" >
-         <ul  className="navbar-nav p-0">     
+    <div  className='div_adjust items-center'>
+    <section className="relative self-start">
+      <nav  className="navbar navbar-expand p-0 text phone nav_adjust" >
+         <ul   className="navbar-nav">     {/*nav_adjust here is also fine*/}
             {/*<li><NavLink className="nav-link" to='.' end >w</NavLink> </li> */}
             <Navigate to="board"></Navigate>
-            <li className='nav-item'><NavLink  to="board" className="nav-link">Board</NavLink></li>
+            <li className='nav-item '><NavLink  to="board" className="nav-link">Board</NavLink></li>
             <li className='nav-item'><NavLink  to="chatroom" className="nav-link">ChatRoom</NavLink></li>
         </ul>
       </nav>
-
     </section>
-      <section className="flex justify-center relative bottom-4">
-        <Outlet ></Outlet>
-      </section>
+
+      
+    <Outlet ></Outlet>
+     
+
     </div>
 
 

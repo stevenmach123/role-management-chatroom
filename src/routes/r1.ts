@@ -20,16 +20,30 @@ import crypto from 'crypto'
 
 router.post('/sign_in1',async  (req,res)=>{
     const student = req.body as user_mode
-    const token =  await admin.auth().createCustomToken(student.id as string,student)
-    
-    return res.json(token)
-    
-
+    let token:string ='' 
+    try{
+    if(!student.id)
+        return res.status(400).json('/sign_in1 missing properties')
+    if( !student.name || identifyRole(student.role) === -1 )
+        token =  await admin.auth().createCustomToken(student.id as string)
+    else if(identifyRole(student.role)  !==-1 )
+        token =  await admin.auth().createCustomToken(student.id as string,student)
+    res.json(token)
+    }
+    catch(e){
+        res.status(400).json('/sign_in1 missing properties')
+    }
 } )
 router.delete('/delete_user/:uid',async (req,res)=>{
+    try{
     const uid = req.params.uid
     await admin.auth().deleteUser(uid)
     res.json("delete user success")
+    }
+    catch(e){
+        res.json('delete user sucess')
+    }
+    
 })
 
 
@@ -37,56 +51,76 @@ router.delete('/delete_user/:uid',async (req,res)=>{
 router.put('/o_student/:uid', async (req,res)=>{
     try{
     
-    const uid = req.params.uid
+    const uid:string = req.params.uid
+    if(!uid)
+        res.status(400).json({msg:'o_student put, missing user'})
     const user = await admin.auth().getUser(uid)
+    console.log('c0',user)
+    if(!user)
+        res.status(400).json({msg:'o_student put, missing user'}) 
 
     const userRef =  db.collection('users')
     const duser  =await  userRef.where('email','==',user.email).get()
     
-    const id_help =(...id:any) =>{
+    const id_help =(...id:any):string =>{
         const g =  user.providerData.find(p=>  p.providerId===ProviderId.GOOGLE)
         const proD = user.providerData.find(p =>p.uid ===id[0]) 
         if(proD?.providerId  !== ProviderId.GOOGLE){
             if(g){
                 return g.uid
             }
-            else if(id[0] && proD)
+            else if(proD)
                  return id[0]
             else
                 return user.providerData[0].uid
-        }else{
-            if(!g)
-                return user.providerData[0].uid
-            else 
-                return id[0]
-        }
+        }else if(g)
+            return id[0]
+        else 
+            return user.providerData[0].uid
+        
     
     }
     const providerData_help = ()=>{
         let result:any[] =[]
         for(let p of user.providerData){
             let v:any = Object.assign({},p.toJSON())
-            v.phoneNumber = ''
+            v.phoneNumber = v?.phoneNumber?(v.phoneNumber as number).toString():''
             result.push(v)
             
         }
-        console.log(result)
+        console.log("this providerData")
         return result
     }
  
-    let proD_key = {} as any
     
-    let exist:boolean =false;
+    
+    let exist:boolean=false;
+    let new_sec_id:string;
+    let user_id:string;
     if(duser.empty ){
-        const new_id = id_help()
-        exist=false
-        const proD = user.providerData.find(p=>p.uid === new_id) as UserInfo
-        proD_key =  Object.assign({},proD.toJSON())
+        new_sec_id = id_help()
+        user_id  =uid
+        const proD = user.providerData.find(p=>p.uid === new_sec_id);
+        if(uid.length >= 7){
+            user_id = await  generateId(5);
+            admin.auth().deleteUser(uid)
         
+            await admin.auth().importUsers([{
+                displayName:user.displayName,
+                uid:user_id,
+                email:user.email,
+                emailVerified:true,   
+                providerData:providerData_help()     
+            }])
+            
+            console.log('c2',proD)
+        }
+
         if(proD)
-            await userRef.doc(new_id).set({
-                name:proD.displayName,
-                id: new_id,
+            await userRef.doc(user_id).set({
+                name:proD?.displayName,
+                id: user_id,
+                sec_id: new_sec_id,
                 class:'',
                 email:user.email,
                 providerData:providerData_help()
@@ -96,37 +130,25 @@ router.put('/o_student/:uid', async (req,res)=>{
     
     else{
         const myuser = duser.docs.at(0)?.data()
-        const new_id = id_help(myuser?.id)
-
-        const proD_new = user.providerData.find(p=>p.uid === new_id) as UserInfo
-        proD_key =  Object.assign({},proD_new.toJSON())
-
-        
-        if(!myuser?.role)
-            exist =false
-        else
-            exist =true 
-        
-        if(new_id !== myuser?.id && proD_new &&myuser){    
-             
-            const body  = myuser    
-            body.id = new_id 
-            body.providerData = providerData_help()
-            body.name = proD_new.displayName
-            body.email = user.email
-            body.class =''
-            await userRef.doc(new_id).set(body)
-        
-            await duser.docs.at(0)?.ref.delete()
-            
+        user_id = myuser?.id
+        new_sec_id = id_help(user_id)
+        if(new_sec_id !== myuser?.sec_id ){                          
+            await userRef.doc(myuser?.id).set({
+                email:user.email,
+                sec_id:new_sec_id,
+                providerData:providerData_help()
+            },{merge:true})    
         }
+       
+        exist =true
 
     }
-    proD_key.phoneNumber =''
-    const this_user = (await userRef.doc(proD_key.uid).get()).data()
     
-    await admin.auth().setCustomUserClaims(uid,{
-        email: user.email,id:proD_key.uid,proD_key :proD_key
+   
+    const this_user = (await userRef.doc(user_id ).get()).data()
+    
+    await admin.auth().setCustomUserClaims(user_id,{
+        email: user.email,sec_id:new_sec_id,id:user_id
     })
     res.json({this_user,exist })   
     }
@@ -138,6 +160,8 @@ router.put('/o_student/:uid', async (req,res)=>{
 
 
 
+///
+
 router.get('/testt',async (req,res)=>{
     const userRef =  db.collection('test1')
     const v   =await userRef.where('king.a','>=',5).get()
@@ -145,6 +169,10 @@ router.get('/testt',async (req,res)=>{
     res.json(result)
 })
 
+router.get('/t',async (req,res)=>{
+    const u = await admin.auth().getUser('79592')
+    res.json(u );
+})
 
 
 
@@ -351,9 +379,8 @@ router.delete('/student/:id',vertify,async (req,res)=>{
   
         const userRef =  db.collection('users')
         await userRef.doc(id).delete()
-        const users = (await userRef.get())
-        const stus =  users.docs.map(u=> u.data())
-        res.json(stus)
+        
+        res.json('delete student success')
         
     }
     catch(e){
@@ -426,12 +453,14 @@ router.post('/types',async (req,res)=>{
 router.delete('/type/:type',async (req,res)=>{
     try{
         const type = req.params.type as string ;
-        if(!type){
+        
+        if(!type || type===""){
            return res.json('delete type nothing') 
         }
+    
         const typeRef= db.collection('type_frame')
         await typeRef.doc(type).delete() 
-       
+        console.log('s3')
         return res.json("delete type sucess")
     }
     catch(e){

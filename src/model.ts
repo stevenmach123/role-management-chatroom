@@ -1,5 +1,7 @@
 import { AxiosResponse } from "axios";
-
+import { Path } from 'react-router-dom';
+import {endprams} from './route_services/type'
+import {vu} from './route_services/FetchService'
 interface user_mode{
     name?:string; 
     id?:string;
@@ -10,6 +12,7 @@ interface user_mode{
     manage?:string[];
     email?:string;
     providerData?:{[key:string]:string}[]
+    sec_id?:string;
     
     
 }
@@ -21,7 +24,7 @@ interface msg_mode{
     docid?:string;
 }
 const t_role  = new Map([[1,"admin"],[2,"manage"],[3,"user"]])
-const color_role = new Map([[1,'yellow'],[2,'aqua']])
+const color_role = new Map([[1,'#ffae42'],[2,'aqua']])
 const properties = {
     ser_port:4010,
     soc_port:4011
@@ -38,5 +41,24 @@ export function pro(x:Promise<AxiosResponse<unknown,any>>){
 }
 export const name_check = new RegExp('^([a-zA-z]+|[a-zA-z]+\s[a-zA-z]+)+$')
 export const password_check =  new RegExp('^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-z0-9!@#$%^&*]*$')
+
+
+
+
+export interface vx{
+    support_set_users:()=>Promise<user_mode[]>,
+    users:user_mode[],
+    this_path:Path,
+    current_path:Path
+    f?:f2
+}
+
+export interface f2 {
+    loading: boolean,
+    error: any,
+    fun: <T, data extends string | number | boolean | object, param extends object>(v:vu<data,param>) => Promise<T|undefined>
+    gen_loading:boolean,
+    setGenLoading: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 

@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { axios1, ser1 } from '../../route_services/axiosService';
 import { AuthP } from '../LayOut/AuthProvider';
+import Sign from './Sign';
 
 
 
@@ -34,7 +35,7 @@ const tt ={
 } as CSSProperties
 
 const log2 = {
-  position:"absolute",
+  position:"relative",
 
    /*left:"50%",  with absolute, still coordinate with parent */ 
 } as CSSProperties
@@ -42,20 +43,19 @@ const log2 = {
 const  Login = ()=>{
     const linku = useLocation()
     const [inIndex, setInIndex] = useState();
-    const {user,setfresh,signin,signinG,signinF} = AuthP()
+    const {user,setfresh,signin,signinG,signinF,f} = AuthP()
     const [err,setErr]  = useState<boolean>(false)  
     const navigate = useNavigate()
     
    
     useEffect(()=>{
-     
-      setTimeout(()=>{
-        
+      setTimeout(()=>{ 
         linku.state = {}
         setInIndex(linku.state)
-      },5000)
-    },[linku])
-    
+      },3000)
+
+    },[])
+  
    const submitForm =async (e:any)=>{
       e.preventDefault()
       const name = e.target.name.value
@@ -65,9 +65,11 @@ const  Login = ()=>{
       const x = new URLSearchParams()
       x.set('name',name);x.set('pass',pass)
       try{
+        f?.setGenLoading(true)
        let res = await ser1.getStudent(x)
+         
         if(signin)
-           signin(res.data)
+          await signin(res.data)
           
         navigate('/home')
         //setUser(res.data)
@@ -88,6 +90,9 @@ const  Login = ()=>{
           else
             console.log('No response')
       }
+      finally{
+        f?.setGenLoading(false)
+      }
 
    }
     //console.log(linku) 
@@ -96,39 +101,37 @@ const  Login = ()=>{
     return (
       <section  className="flex flex-col justify-center items-center   h-full">
           {linku.state?.success ?  
-            <div style={tt}  className={`flex justify-between  items-center gap-x-6 text-xl bg-green-400`}> 
-              <i style={{color:'green',fontSize:'200%'}} className="bi bi-check"></i>
-              <p>Register user sucess </p>
-            </div>
+            <Sign info={'success'} message={<p>Register user success </p>} />
+              
           :null}
-          {err && <div style={tt}  className={`flex justify-between  items-center gap-x-6  text-xl bg-red-300`}> 
-            <i style={{fontSize:'200%'}} className="bi bi-x text-red-600"></i>
-            <p>Username and/or Password not correct </p> 
+         {err && <Sign info={'error'} error={err} message={ <p>Username and/or Password not correct </p>} />}
+          
+         <div style={{opacity:f?.gen_loading?1:0}} className="wrapper">
+            <div className='sign'><Sign  message={<>Loading</>}></Sign></div>
           </div>
-          }
 
-       
-
-        <form  onSubmit={submitForm} className="w-1/2 pb-3 relative">  {/* try absolute here, with (2) when no relative/absolute */}
+        <form  onSubmit={submitForm} className="w-1/2 relative">  {/* try absolute here, with (2) when no relative/absolute */}
             <div className="form-group pb-2">
                 <label className="pb-2" >Username</label> <br/>
                 <input className="w-full text-black"  name="name" />
                 
             </div>
-            <div  className="form-group pb-2">
+            <div  className="form-group pb-2 ">
                 <label className="pb-2" >Password</label>   <br/>
                 <input className="w-full text-black" name="pass" />
                 
-            </div>  
-            <div  className="relative flex"> {/*(2)  with/without absolute.    with absolute:child elements still relative to this box. But this big box is relative to closet relative friend/parent element   */} {/*without absolute:child is not relative to this box.But, this big box relative to closet friend/parent element */}
-              <button style={log}  type="submit" className="btn btn-outline-primary top-5"  >SignIn</button>  {/* position:relative interfere transform. Display:block - make nav-link wrap button (become div), so transform work normal  */}
-              <p style={log2} className='text-sm '> Need Account?  <NavLink to="/signup"  className="underline font-bold  decoration-orange-400  text-orange-400  " > Sign Up</NavLink ></p>
-
             </div> 
+           
+             {/*(2)  with/without absolute.    with absolute:child elements still relative to this box. But this big box is relative to closet relative friend/parent element   */} {/*without absolute:child is not relative to this box.But, this big box relative to closet friend/parent element */}
+              <div style={log2} className='text-sm '> Need Account?  <NavLink to="/signup"  className="underline font-bold  decoration-orange-400  text-orange-400  " > Sign Up</NavLink ></div> 
+              <div>
+                <button style={log}  type="submit" className="btn btn-outline-primary"  >SignIn</button>  {/* position:relative interfere transform. Display:block - make nav-link wrap button (become div), so transform work normal  */}
+              </div>
+            
   
         </form>
          { /* before  <div  className="relative w-1/2"> is here*/ }
-         <div  className="w-1/2 flex gap-3 relative">
+         <div  className="w-1/2 flex gap-3 pt-2 relative">
           <div onClick={signinG} style={img}> <img src="/google_img.png"/> </div>
           <div onClick={signinF} style={img}> <img src="/facebook_img.jpeg"/></div>
         </div>
@@ -140,14 +143,3 @@ const  Login = ()=>{
 export default Login
 
 
-/* 
-const [error,setError] = setState<string>("")
-const [load,setLoad]  = setState<boolean>(true)
-
-load?<section>loading...</section>:
-error?</section>:<section>loading...</section>
-
-
-
-if 
-*/
