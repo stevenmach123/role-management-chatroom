@@ -28,21 +28,18 @@
       * Users can communicate within assigned group, but they can also communicate with individual
       * *Admin* and *Group Manager* can freely switch between their authorized group to manage users activities
 
-
 <details>
-   <summary>hi</summary>
+   <summary><h2>Images</h1></summary>
    <br/>
-     <p>sdfsdfdf</p>
-     <p>&nbsp;&nbsp;fsfdf</p>
-     <ul>
-        <li>fsdfdsf</li>
-        <ul>
-           <ul>
-           <li>fsfdf</li>
-           </ul>
-        </ul>
-     </ul>
-      
+   <img src="/assets/a1.png"/ width="550" height="660" />
+   <hr/>
+   <img src="/assets/a2.png"/ width="700" height="660" />
+   <hr/>
+    <img src="/assets/a3.png"/ width="700" height="660" />
+   <hr/>
+     <img src="/assets/a4.png"/ width="700" height="660" />
+   <hr/>
+   <img src="/assets/a5.png"/ width="700" height="660" />
 
 </details>
 
