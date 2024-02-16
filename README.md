@@ -27,7 +27,10 @@
   5. Chatroom
       * Users can communicate within assigned group, but they can also communicate with individual
       * *Admin* and *Group Manager* can freely switch between their authorized group to manage users activities
-
+  6. Map 1 UI to many UI
+      * Change group of 1 UI reflect on Chatroom/ Setting/ Group Manage of other UI
+      * Delete user of 1 UI reflect on Chatroom/Group Manage of other UI
+      * Modifying info of 1 UI reflect on Chatroom/ Setting/ Group Manage of other UI
 <details>
    <summary><h2>Images</h1></summary>
    <br/>
